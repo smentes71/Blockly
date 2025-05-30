@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
   <title>Blockly Tüm Bloklar Örneği</title>
-  <script src="blockly.min.js"></script>
+  <script src="https://unpkg.com/blockly@10.0.0/blockly.min.js"></script>
 </head>
 <body>
   <h2>Blockly Tüm Bloklar</h2>
@@ -17,14 +16,12 @@
     <block type="number_block"></block>
     <block type="alert_block"></block>
     <block type="if_block"></block>
-
     <block type="ping_block"></block>
     <block type="port_check_block"></block>
     <block type="and_block"></block>
     <block type="or_block"></block>
   </xml>
 
-  
 <script>
   // THY bloğu
   Blockly.Blocks['customblock'] = {
@@ -95,51 +92,50 @@
   };
 
   // Ping bloğu
-Blockly.Blocks['ping_block'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("Ping")
-        .appendField(new Blockly.FieldTextInput("8.8.8.8"), "ADDRESS");
-    this.setOutput(true, null); // Koşula bağlanabilsin
-    this.setColour(60);
-    this.setTooltip("Verilen adrese ping atar (simülasyon).");
-  }
-};
+  Blockly.Blocks['ping_block'] = {
+    init: function() {
+      this.appendDummyInput()
+          .appendField("Ping")
+          .appendField(new Blockly.FieldTextInput("8.8.8.8"), "ADDRESS");
+      this.setOutput(true, null);
+      this.setColour(60);
+      this.setTooltip("Verilen adrese ping atar (simülasyon).");
+    }
+  };
 
-// Port kontrol bloğu
-Blockly.Blocks['port_check_block'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("Port kontrol:")
-        .appendField(new Blockly.FieldTextInput("80"), "PORT");
-    this.setOutput(true, null); // Koşula bağlanabilsin
-    this.setColour(60);
-    this.setTooltip("Belirtilen port açık mı (simülasyon).");
-  }
-};
+  // Port kontrol bloğu
+  Blockly.Blocks['port_check_block'] = {
+    init: function() {
+      this.appendDummyInput()
+          .appendField("Port kontrol:")
+          .appendField(new Blockly.FieldTextInput("80"), "PORT");
+      this.setOutput(true, null);
+      this.setColour(60);
+      this.setTooltip("Belirtilen port açık mı (simülasyon).");
+    }
+  };
 
-//And blogu
-Blockly.Blocks['and_block'] = {
-  init: function() {
-    this.appendValueInput("A").setCheck(null);
-    this.appendValueInput("B").setCheck(null).appendField("ve");
-    this.setOutput(true, null);
-    this.setColour(240);
-    this.setTooltip("İki koşulu VE (AND) ile birleştirir");
-  }
-};
+  //And blogu
+  Blockly.Blocks['and_block'] = {
+    init: function() {
+      this.appendValueInput("A").setCheck(null);
+      this.appendValueInput("B").setCheck(null).appendField("ve");
+      this.setOutput(true, null);
+      this.setColour(240);
+      this.setTooltip("İki koşulu VE (AND) ile birleştirir");
+    }
+  };
 
-//Or bloğu
-Blockly.Blocks['or_block'] = {
-  init: function() {
-    this.appendValueInput("A").setCheck(null);
-    this.appendValueInput("B").setCheck(null).appendField("veya");
-    this.setOutput(true, null);
-    this.setColour(240);
-    this.setTooltip("İki koşulu VEYA (OR) ile birleştirir");
-  }
-};
-
+  //Or bloğu
+  Blockly.Blocks['or_block'] = {
+    init: function() {
+      this.appendValueInput("A").setCheck(null);
+      this.appendValueInput("B").setCheck(null).appendField("veya");
+      this.setOutput(true, null);
+      this.setColour(240);
+      this.setTooltip("İki koşulu VEYA (OR) ile birleştirir");
+    }
+  };
 
   const javascriptGenerator = Blockly.JavaScript;
 
@@ -169,16 +165,15 @@ Blockly.Blocks['or_block'] = {
     return code;
   };
 
-
   javascriptGenerator.forBlock['ping_block'] = function(block) {
     var addr = block.getFieldValue('ADDRESS');
-    var code = '"' + addr + '" === "8.8.8.8"'; // sadece bu IP true döner
+    var code = '"' + addr + '" === "8.8.8.8"';
     return [code, Blockly.JavaScript.ORDER_EQUALITY];
   };
   
   javascriptGenerator.forBlock['port_check_block'] = function(block) {
     var port = block.getFieldValue('PORT');
-    var code = port + ' == 80'; // sadece port 80 true döner
+    var code = port + ' == 80';
     return [code, Blockly.JavaScript.ORDER_EQUALITY];
   };
 
