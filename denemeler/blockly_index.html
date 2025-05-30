@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="blockly.min.js"></script>
+</head>
+<body>
+  <h2>Blockly Örneği: THY'ye Git</h2>
+  <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+  <xml id="toolbox" style="display: none">
+    <block type="customblock"></block>
+    <block type="customblock2"></block>
+  </xml>
+  <button onclick="runCode()">Çalıştır</button>
+ 
+  <script>
+    // Özel blok tanımlama
+    Blockly.Blocks['customblock'] = {
+      init: function() {
+        this.appendDummyInput().appendField("THY'ye Git");
+        this.setPreviousStatement(true, null);  // Değişiklik: setOutput yerine setPreviousStatement
+        this.setNextStatement(true, null);      // Değişiklik: Statement bloğu olarak ayarla
+        this.setColour(160);
+        this.setTooltip("Bu blok THY web sitesine yönlendirir.");
+        this.setHelpUrl("");
+      }
+    };
+
+    // Özel blok tanımlama
+    Blockly.Blocks['customblock2'] = {
+      init: function() {
+        this.appendDummyInput().appendField("THY'ye Gel");
+        this.setPreviousStatement(true, null);  // Değişiklik: setOutput yerine setPreviousStatement
+        this.setNextStatement(true, null);      // Değişiklik: Statement bloğu olarak ayarla
+        this.setColour(160);
+        this.setTooltip("Bu blok THY web sitesine yönlendirir.");
+        this.setHelpUrl("");
+      }
+    };
+ 
+    // Kod üretici
+    const javascriptGenerator = Blockly.JavaScript;
+    javascriptGenerator.forBlock['customblock'] = function(block) {
+      var code = 'window.open("https://www.thy.com", "_blank");\n';
+      return code;  // Statement blokları için sadece code döndürülür
+    };
+ 
+    // Blockly çalışma alanını oluştur
+    var workspace = Blockly.inject('blocklyDiv', {
+      toolbox: document.getElementById('toolbox')
+    });
+ 
+    // Çalıştırma fonksiyonu
+    function runCode() {
+      var code = Blockly.JavaScript.workspaceToCode(workspace);
+      console.log("Üretilen Kod: ", code);
+      try {
+        eval(code); // Kodu çalıştır
+      } catch (error) {
+        console.error("Hata oluştu:", error);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Blockly Tüm Bloklar Örneği</title>
+  <script src="blockly.min.js"></script>
+</head>
+<body>
+  <h2>Blockly Tüm Bloklar</h2>
+  <div id="blocklyDiv" style="height: 480px; width: 800px;"></div>
+  <button onclick="runCode()">Çalıştır</button>
+
+  <xml id="toolbox" style="display: none">
+    <category name="Aksiyonlar" colour="210">
+      <block type="customblock"></block>
+      <block type="text_block"></block>
+      <block type="number_block"></block>
+      <block type="alert_block"></block>
+      <block type="if_block"></block>
+      <block type="ping_block"></block>
+      <block type="port_check_block"></block>
+    </category>
+  </xml>
+
+<script>
+  // THY bloğu
+  Blockly.Blocks['customblock'] = {
+    init: function() {
+      this.appendDummyInput().appendField("THY'ye Git");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(160);
+      this.setTooltip("Bu blok THY web sitesine yönlendirir.");
+      this.setHelpUrl("");
+    }
+  };
+
+  // Metin bloğu
+  Blockly.Blocks['text_block'] = {
+    init: function() {
+      this.appendDummyInput()
+          .appendField("Metin:")
+          .appendField(new Blockly.FieldTextInput("Merhaba"), "TEXT");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(120);
+      this.setTooltip("Bir metin mesajı gösterir");
+    }
+  };
+
+  // Sayı bloğu
+  Blockly.Blocks['number_block'] = {
+    init: function() {
+      this.appendDummyInput()
+          .appendField("Sayı:")
+          .appendField(new Blockly.FieldNumber(0), "NUMBER");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(230);
+      this.setTooltip("Bir sayı gösterir");
+    }
+  };
+
+  // Alert bloğu
+  Blockly.Blocks['alert_block'] = {
+    init: function() {
+      this.appendValueInput("MESSAGE")
+          .setCheck(null)
+          .appendField("Uyarı göster");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(290);
+      this.setTooltip("Alert kutusu gösterir");
+    }
+  };
+
+  // IF bloğu
+  Blockly.Blocks['if_block'] = {
+    init: function() {
+      this.appendValueInput("CONDITION")
+          .setCheck(null)
+          .appendField("Eğer");
+      this.appendStatementInput("DO")
+          .setCheck(null)
+          .appendField("ise şunu yap:");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(210);
+      this.setTooltip("Koşullu çalıştırma");
+      this.setHelpUrl("");
+    }
+  };
+
+  // Ping bloğu
+  Blockly.Blocks['ping_block'] = {
+    init: function() {
+      this.appendDummyInput()
+          .appendField("Ping at:")
+          .appendField(new Blockly.FieldTextInput("8.8.8.8"), "ADDRESS");
+      this.setOutput(true, null);
+      this.setColour(60);
+      this.setTooltip("Verilen adrese ping atar (simülasyon).");
+    }
+  };
+
+  // Port kontrol bloğu
+  Blockly.Blocks['port_check_block'] = {
+    init: function() {
+      this.appendDummyInput()
+          .appendField("Port kontrol:")
+          .appendField(new Blockly.FieldTextInput("80"), "PORT");
+      this.setOutput(true, null);
+      this.setColour(60);
+      this.setTooltip("Belirtilen port açık mı (simülasyon).");
+    }
+  };
+
+  const javascriptGenerator = Blockly.JavaScript;
+
+  javascriptGenerator.forBlock['customblock'] = function(block) {
+    return 'window.open("https://www.thy.com", "_blank");\n';
+  };
+
+  javascriptGenerator.forBlock['text_block'] = function(block) {
+    var text = block.getFieldValue('TEXT');
+    return 'console.log("' + text + '");\n';
+  };
+
+  javascriptGenerator.forBlock['number_block'] = function(block) {
+    var number = block.getFieldValue('NUMBER');
+    return 'console.log(' + number + ');\n';
+  };
+
+  javascriptGenerator.forBlock['alert_block'] = function(block) {
+    var message = javascriptGenerator.valueToCode(block, 'MESSAGE', javascriptGenerator.ORDER_ATOMIC) || '""';
+    return 'alert(' + message + ');\n';
+  };
+
+  javascriptGenerator.forBlock['if_block'] = function(block) {
+    var condition = javascriptGenerator.valueToCode(block, 'CONDITION', javascriptGenerator.ORDER_NONE) || 'false';
+    var statements_do = javascriptGenerator.statementToCode(block, 'DO');
+    var code = 'if (' + condition + ') {\n' + statements_do + '}\n';
+    return code;
+  };
+
+  javascriptGenerator.forBlock['ping_block'] = function(block) {
+    var addr = block.getFieldValue('ADDRESS');
+    var code = '"' + addr + '" === "8.8.8.8"';
+    return [code, Blockly.JavaScript.ORDER_EQUALITY];
+  };
+
+  javascriptGenerator.forBlock['port_check_block'] = function(block) {
+    var port = block.getFieldValue('PORT');
+    var code = port + ' == 80';
+    return [code, Blockly.JavaScript.ORDER_EQUALITY];
+  };
+
+  // Blockly başlat
+  var workspace = Blockly.inject('blocklyDiv', {
+    toolbox: document.getElementById('toolbox'),
+    trashcan: true,
+    scrollbars: true
+  });
+
+  function runCode() {
+    var code = Blockly.JavaScript.workspaceToCode(workspace);
+    console.log("Üretilen Kod:", code);
+    try {
+      eval(code);
+    } catch (error) {
+      console.error("Hata oluştu:", error);
+    }
+  }
+</script>
+
+</body>
+</html>
