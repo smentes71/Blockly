@@ -8,10 +8,12 @@
     body {
       font-family: "Comic Sans MS", cursive, sans-serif;
       background-color: #f0f9ff;
+      background-image: linear-gradient(to bottom right, #f0f9ff 0%, #e1f4ff 100%);
     }
     h2 {
       color: #4a90e2;
       text-align: center;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
     button {
       background-color: #4CAF50;
@@ -24,8 +26,20 @@
       font-size: 16px;
       margin: 4px 2px;
       cursor: pointer;
-      border-radius: 12px;
+      border-radius: 25px;
       font-family: "Comic Sans MS", cursive, sans-serif;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    #blocklyDiv {
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      margin: 20px auto;
+      background-color: white;
     }
   </style>
 </head>
@@ -49,6 +63,9 @@
   </xml>
 
 <script>
+  // Özel şekil tanımlamaları
+  Blockly.BlockSvg.START_HAT = true;
+
   Blockly.Blocks['customblock'] = {
     init: function() {
       this.appendDummyInput().appendField("✈️ Uçağa Bin!");
@@ -56,6 +73,10 @@
       this.setNextStatement(true, null);
       this.setColour('#FF69B4');
       this.setTooltip("Haydi uçağa binelim!");
+      this.setStyle('shape_statement');
+      // Özel şekil için gölge efekti
+      this.setOutputShape(Blockly.ROUND_CORNER);
+      this.setInputsInline(true);
     }
   };
 
@@ -68,6 +89,8 @@
       this.setNextStatement(true, null);
       this.setColour('#9B59B6');
       this.setTooltip("Bir mesaj yazalım!");
+      this.setStyle('shape_statement');
+      this.setInputsInline(true);
     }
   };
 
@@ -80,6 +103,8 @@
       this.setNextStatement(true, null);
       this.setColour('#3498DB');
       this.setTooltip("Bir sayı seçelim!");
+      this.setStyle('shape_statement');
+      this.setInputsInline(true);
     }
   };
 
@@ -92,6 +117,8 @@
       this.setNextStatement(true, null);
       this.setColour('#E74C3C');
       this.setTooltip("Arkadaşına mesaj gönder!");
+      this.setStyle('shape_statement');
+      this.setInputsInline(true);
     }
   };
 
@@ -107,6 +134,8 @@
       this.setNextStatement(true, null);
       this.setColour('#F1C40F');
       this.setTooltip("Bir şey çalışmıyorsa ne yapalım?");
+      this.setStyle('shape_statement');
+      this.setInputsInline(true);
     }
   };
 
@@ -118,6 +147,8 @@
       this.setOutput(true, null);
       this.setColour('#2ECC71');
       this.setTooltip("Arkadaşına top at!");
+      this.setOutputShape(Blockly.ROUND_CORNER);
+      this.setInputsInline(true);
     }
   };
 
@@ -129,6 +160,8 @@
       this.setOutput(true, null);
       this.setColour('#E67E22');
       this.setTooltip("Kapı açık mı bakalım!");
+      this.setOutputShape(Blockly.ROUND_CORNER);
+      this.setInputsInline(true);
     }
   };
 
@@ -139,6 +172,8 @@
       this.setOutput(true, null);
       this.setColour('#1ABC9C');
       this.setTooltip("İkisi de olsun!");
+      this.setOutputShape(Blockly.ROUND_CORNER);
+      this.setInputsInline(true);
     }
   };
 
@@ -149,8 +184,28 @@
       this.setOutput(true, null);
       this.setColour('#95A5A6');
       this.setTooltip("Biri olsa yeter!");
+      this.setOutputShape(Blockly.ROUND_CORNER);
+      this.setInputsInline(true);
     }
   };
+
+  // Özel tema tanımlaması
+  Blockly.Theme.defineTheme('kidTheme', {
+    'base': Blockly.Themes.Classic,
+    'componentStyles': {
+      'workspaceBackgroundColour': '#f0f9ff',
+      'toolboxBackgroundColour': '#E1F5FE',
+      'toolboxForegroundColour': '#1976D2',
+      'flyoutBackgroundColour': '#E3F2FD',
+      'flyoutForegroundColour': '#1E88E5',
+      'flyoutOpacity': 0.9,
+      'scrollbarColour': '#CFD8DC',
+      'insertionMarkerColour': '#2196F3',
+      'insertionMarkerOpacity': 0.3,
+      'scrollbarOpacity': 0.4,
+      'cursorColour': '#1976D2'
+    }
+  });
 
   const javascriptGenerator = Blockly.JavaScript;
 
@@ -208,6 +263,7 @@
 
   var workspace = Blockly.inject('blocklyDiv', {
     toolbox: document.getElementById('toolbox'),
+    theme: 'kidTheme',
     trashcan: true,
     scrollbars: true,
     grid: {
