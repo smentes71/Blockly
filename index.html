@@ -146,6 +146,16 @@
     .bouncing {
       animation: bounce 0.5s ease-in-out infinite;
     }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    
+    .shaking {
+      animation: shake 0.5s ease-in-out 3;
+    }
   </style>
 </head>
 <body>
@@ -180,6 +190,7 @@
       <block type="sit"></block>
       <block type="stand"></block>
       <block type="lie_down"></block>
+      <block type="wake_up"></block>
     </category>
     
     <category name="🔊 Sesler" colour="#74B9FF">
@@ -221,14 +232,15 @@
     position: 'standing',
     mood: 'happy',
     energy: 100,
-    isMoving: false
+    isMoving: false,
+    isAwake: true
   };
 
   // Robot ASCII sanatları
   const robotAsciiArt = {
     default: `    /\\_/\\  
    ( o.o ) 
-    &gt; ^ &lt;  
+    > ^ <  
    /     \\ 
   (  ___  )
    |  |  | 
@@ -236,7 +248,7 @@
     
     sit: `    /\\_/\\  
    ( o.o ) 
-    &gt; ^ &lt;  
+    > ^ <  
    /     \\ 
   (  ___  )
      | |   
@@ -244,14 +256,14 @@
      
     lie_down: `    /\\_/\\  
    ( -.- ) 
-    &gt; ^ &lt;  
+    > ^ <  
  ___________
 (           )
  -----------`,
  
     happy: `    /\\_/\\  
    ( ^.^ ) 
-    &gt; ◡ &lt;  
+    > ◡ <  
    /     \\ 
   (  ___  )
    |  |  | 
@@ -259,7 +271,7 @@
    
     excited: `    /\\_/\\  
    ( ★.★ ) 
-    &gt; ◡ &lt;  
+    > ◡ <  
    /     \\ 
   (  ___  )
    |  |  | 
@@ -267,15 +279,15 @@
    
     sad: `    /\\_/\\  
    ( ;.; ) 
-    &gt; v &lt;  
+    > v <  
    /     \\ 
   (  ___  )
    |  |  | 
    |__|__|`,
    
     angry: `    /\\_/\\  
-   ( &gt;.&lt; ) 
-    &gt; ∩ &lt;  
+   ( >.< ) 
+    > ∩ <  
    /     \\ 
   (  ___  )
    |  |  | 
@@ -283,7 +295,15 @@
    
     sleepy: `    /\\_/\\  
    ( -.z ) 
-    &gt; ~ &lt;  
+    > ~ <  
+   /     \\ 
+  (  ___  )
+   |  |  | 
+   |__|__|`,
+   
+    wake_up: `    /\\_/\\  
+   ( O.O ) 
+    > ! <  
    /     \\ 
   (  ___  )
    |  |  | 
@@ -358,6 +378,17 @@
       this.setNextStatement(true, null);
       this.setColour('#FF6B6B');
       this.setTooltip("Robot uzanır");
+    }
+  };
+
+  // YENİ: Uyan bloğu
+  Blockly.Blocks['wake_up'] = {
+    init: function() {
+      this.appendDummyInput().appendField("☀️ Uyan");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour('#FF6B6B');
+      this.setTooltip("Robot uyanır ve enerjisi dolar");
     }
   };
 
@@ -589,6 +620,11 @@
     return 'robotAction("lie_down", "😴 Uzanıyorum!");\n';
   };
 
+  // YENİ: Uyan kod üreticisi
+  javascriptGenerator.forBlock['wake_up'] = function(block) {
+    return 'robotAction("wake_up", "☀️ Uyanıyorum! Günaydın!");\n';
+  };
+
   // Ses kod üreticileri
   javascriptGenerator.forBlock['bark'] = function(block) {
     return 'robotAction("bark", "🐕 HAV HAV HAV!");\n';
@@ -725,6 +761,11 @@
       case 'lie_down':
         status.textContent = '😴 Uzanıyorum!';
         break;
+      case 'wake_up':
+        status.textContent = '☀️ Uyanıyorum!';
+        display.classList.add('shaking');
+        setTimeout(() => display.classList.remove('shaking'), 1500);
+        break;
       case 'happy':
         status.textContent = '😊 Çok Mutluyum!';
         display.classList.add('wagging');
@@ -760,7 +801,8 @@
       'bark': 'Havlıyorum!',
       'fetch': 'Top Getiriyorum!',
       'dance': 'Dans Ediyorum!',
-      'roll_over': 'Takla Atıyorum!'
+      'roll_over': 'Takla Atıyorum!',
+      'wake_up': 'Uyanıyorum!'
     };
     return actions[action] || 'Hazırım!';
   }
@@ -771,6 +813,12 @@
       case 'lie_down':
         robotState.position = action;
         robotState.energy += 10;
+        break;
+      case 'wake_up':
+        robotState.isAwake = true;
+        robotState.energy = 100; // Enerji tam dolar
+        robotState.mood = 'happy';
+        robotState.position = 'standing';
         break;
       case 'move_forward':
       case 'move_backward':
@@ -784,6 +832,10 @@
         break;
       case 'sad':
         robotState.mood = 'sad';
+        break;
+      case 'sleepy':
+        robotState.isAwake = false;
+        robotState.energy -= 20;
         break;
       case 'dance':
       case 'fetch':
@@ -817,7 +869,8 @@
       position: 'standing',
       mood: 'happy',
       energy: 100,
-      isMoving: false
+      isMoving: false,
+      isAwake: true
     };
     
     const output = document.getElementById('output');
@@ -828,7 +881,7 @@
     
     display.innerHTML = robotAsciiArt.default;
     status.textContent = '🐕 Robot Hazır!';
-    display.classList.remove('wagging', 'bouncing');
+    display.classList.remove('wagging', 'bouncing', 'shaking');
   }
 
   // Sayfa yüklendiğinde robot görselini ayarla
