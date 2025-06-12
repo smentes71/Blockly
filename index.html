@@ -162,15 +162,7 @@
     
     <div class="robot-display">
       <div class="status" id="robotStatus">🐕 Robot Hazır!</div>
-      <div class="robot-ascii" id="robotDisplay">
-    /\_/\  
-   ( o.o ) 
-    > ^ <  
-   /     \ 
-  (  ___  )
-   |  |  | 
-   |__|__|
-      </div>
+      <div class="robot-ascii" id="robotDisplay"></div>
     </div>
     
     <div class="output" id="output">
@@ -230,6 +222,72 @@
     mood: 'happy',
     energy: 100,
     isMoving: false
+  };
+
+  // Robot ASCII sanatları
+  const robotAsciiArt = {
+    default: `    /\\_/\\  
+   ( o.o ) 
+    &gt; ^ &lt;  
+   /     \\ 
+  (  ___  )
+   |  |  | 
+   |__|__|`,
+    
+    sit: `    /\\_/\\  
+   ( o.o ) 
+    &gt; ^ &lt;  
+   /     \\ 
+  (  ___  )
+     | |   
+     |_|   `,
+     
+    lie_down: `    /\\_/\\  
+   ( -.- ) 
+    &gt; ^ &lt;  
+ ___________
+(           )
+ -----------`,
+ 
+    happy: `    /\\_/\\  
+   ( ^.^ ) 
+    &gt; ◡ &lt;  
+   /     \\ 
+  (  ___  )
+   |  |  | 
+   |__|__|`,
+   
+    excited: `    /\\_/\\  
+   ( ★.★ ) 
+    &gt; ◡ &lt;  
+   /     \\ 
+  (  ___  )
+   |  |  | 
+   |__|__|`,
+   
+    sad: `    /\\_/\\  
+   ( ;.; ) 
+    &gt; v &lt;  
+   /     \\ 
+  (  ___  )
+   |  |  | 
+   |__|__|`,
+   
+    angry: `    /\\_/\\  
+   ( &gt;.&lt; ) 
+    &gt; ∩ &lt;  
+   /     \\ 
+  (  ___  )
+   |  |  | 
+   |__|__|`,
+   
+    sleepy: `    /\\_/\\  
+   ( -.z ) 
+    &gt; ~ &lt;  
+   /     \\ 
+  (  ___  )
+   |  |  | 
+   |__|__|`
   };
 
   // Robot Hareket Blokları
@@ -658,90 +716,39 @@
     const status = document.getElementById('robotStatus');
     
     // Robot ASCII sanatını güncelle
-    let robotArt = '';
+    let robotArt = robotAsciiArt[action] || robotAsciiArt.default;
     
     switch(action) {
       case 'sit':
-        robotArt = `    /\\_/\\  
-   ( o.o ) 
-    > ^ <  
-   /     \\ 
-  (  ___  )
-     | |   
-     |_|   `;
         status.textContent = '🪑 Oturuyorum!';
         break;
-        
       case 'lie_down':
-        robotArt = `    /\\_/\\  
-   ( -.- ) 
-    > ^ <  
- ___________
-(           )
- -----------`;
         status.textContent = '😴 Uzanıyorum!';
         break;
-        
       case 'happy':
-        robotArt = `    /\\_/\\  
-   ( ^.^ ) 
-    > ◡ <  
-   /     \\ 
-  (  ___  )
-   |  |  | 
-   |__|__|`;
         status.textContent = '😊 Çok Mutluyum!';
         display.classList.add('wagging');
         setTimeout(() => display.classList.remove('wagging'), 2000);
         break;
-        
       case 'excited':
-        robotArt = `    /\\_/\\  
-   ( ★.★ ) 
-    > ◡ <  
-   /     \\ 
-  (  ___  )
-   |  |  | 
-   |__|__|`;
         status.textContent = '🤩 Çok Heyecanlıyım!';
         display.classList.add('bouncing');
         setTimeout(() => display.classList.remove('bouncing'), 3000);
         break;
-        
       case 'sad':
-        robotArt = `    /\\_/\\  
-   ( ;.; ) 
-    > v <  
-   /     \\ 
-  (  ___  )
-   |  |  | 
-   |__|__|`;
         status.textContent = '😢 Üzgünüm...';
         break;
-        
       case 'angry':
-        robotArt = `    /\\_/\\  
-   ( >.< ) 
-    > ∩ <  
-   /     \\ 
-  (  ___  )
-   |  |  | 
-   |__|__|`;
         status.textContent = '😠 Kızgınım!';
         break;
-        
+      case 'sleepy':
+        status.textContent = '😴 Çok Uykulum...';
+        break;
       default:
-        robotArt = `    /\\_/\\  
-   ( o.o ) 
-    > ^ <  
-   /     \\ 
-  (  ___  )
-   |  |  | 
-   |__|__|`;
         status.textContent = '🐕 ' + getActionText(action);
     }
     
-    display.textContent = robotArt;
+    display.innerHTML = robotArt;
   }
 
   function getActionText(action) {
@@ -819,20 +826,17 @@
     const display = document.getElementById('robotDisplay');
     const status = document.getElementById('robotStatus');
     
-    display.textContent = `    /\\_/\\  
-   ( o.o ) 
-    > ^ <  
-   /     \\ 
-  (  ___  )
-   |  |  | 
-   |__|__|`;
-    
+    display.innerHTML = robotAsciiArt.default;
     status.textContent = '🐕 Robot Hazır!';
     display.classList.remove('wagging', 'bouncing');
   }
 
-  // Başlangıç blokları ekle
+  // Sayfa yüklendiğinde robot görselini ayarla
   window.addEventListener('load', function() {
+    // Robot görselini başlat
+    document.getElementById('robotDisplay').innerHTML = robotAsciiArt.default;
+    
+    // Başlangıç blokları ekle
     const startBlocks = `
     <xml xmlns="https://developers.google.com/blockly/xml">
       <block type="happy" x="50" y="50">
