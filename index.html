@@ -87,6 +87,40 @@
       border: 3px solid #e9ecef;
     }
     
+    /* Blockly bağlantı noktalarını köşeli yapma */
+    .blocklyPath {
+      stroke-linejoin: miter !important;
+      stroke-linecap: square !important;
+    }
+    
+    /* Blok köşelerini keskinleştirme */
+    .blocklyBlockBackground {
+      rx: 2 !important;
+      ry: 2 !important;
+    }
+    
+    /* Bağlantı noktalarını köşeli yapma */
+    .blocklyConnectionLine {
+      stroke-linecap: square !important;
+      stroke-linejoin: miter !important;
+    }
+    
+    /* Tab ve slot bağlantılarını köşeli yapma */
+    .blocklyHighlightedConnectionPath {
+      stroke-linecap: square !important;
+      stroke-linejoin: miter !important;
+    }
+    
+    /* Blok gölgelerini keskinleştirme */
+    .blocklyShadow {
+      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3)) !important;
+    }
+    
+    /* Puzzle tab şekillerini köşeli yapma */
+    .blocklyPath[d*="c"] {
+      stroke-linejoin: miter !important;
+    }
+    
     .robot-display {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border-radius: 15px;
