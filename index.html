@@ -121,6 +121,79 @@
       stroke-linejoin: miter !important;
     }
     
+    /* Blok içindeki metinleri ve simgeleri büyütme */
+    .blocklyText {
+      font-size: 16px !important;
+      font-weight: bold !important;
+      font-family: "Comic Sans MS", cursive, sans-serif !important;
+    }
+    
+    /* Blok field'larını büyütme */
+    .blocklyFieldLabel {
+      font-size: 18px !important;
+      font-weight: bold !important;
+      font-family: "Comic Sans MS", cursive, sans-serif !important;
+    }
+    
+    /* Dropdown ve input field'larını büyütme */
+    .blocklyFieldTextInput,
+    .blocklyFieldNumber,
+    .blocklyFieldDropdown {
+      font-size: 16px !important;
+      font-weight: bold !important;
+      font-family: "Comic Sans MS", cursive, sans-serif !important;
+    }
+    
+    /* Toolbox kategorilerini büyütme */
+    .blocklyTreeLabel {
+      font-size: 16px !important;
+      font-weight: bold !important;
+      font-family: "Comic Sans MS", cursive, sans-serif !important;
+    }
+    
+    /* Blok içindeki emoji ve simgeleri büyütme */
+    .blocklyText tspan {
+      font-size: 20px !important;
+    }
+    
+    /* Özel emoji büyütme sınıfı */
+    .blocklyText:contains("🐕"),
+    .blocklyText:contains("🔙"),
+    .blocklyText:contains("↩️"),
+    .blocklyText:contains("↪️"),
+    .blocklyText:contains("🪑"),
+    .blocklyText:contains("🧍"),
+    .blocklyText:contains("😴"),
+    .blocklyText:contains("☀️"),
+    .blocklyText:contains("🔊"),
+    .blocklyText:contains("😢"),
+    .blocklyText:contains("🌙"),
+    .blocklyText:contains("🎵"),
+    .blocklyText:contains("😊"),
+    .blocklyText:contains("🤩"),
+    .blocklyText:contains("😠"),
+    .blocklyText:contains("🎾"),
+    .blocklyText:contains("🔄"),
+    .blocklyText:contains("🤝"),
+    .blocklyText:contains("💃"),
+    .blocklyText:contains("🌀"),
+    .blocklyText:contains("⏰"),
+    .blocklyText:contains("🔁"),
+    .blocklyText:contains("🤔") {
+      font-size: 22px !important;
+    }
+    
+    /* Blok boyutlarını artırma */
+    .blocklyBlockBackground {
+      transform: scale(1.1) !important;
+      transform-origin: center !important;
+    }
+    
+    /* Bloklar arası boşluğu artırma */
+    .blocklyWorkspace {
+      padding: 20px !important;
+    }
+    
     .robot-display {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border-radius: 15px;
