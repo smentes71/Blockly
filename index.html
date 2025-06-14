@@ -181,7 +181,8 @@
     .blocklyText:contains("🌀"),
     .blocklyText:contains("⏰"),
     .blocklyText:contains("🔁"),
-    .blocklyText:contains("🤔") {
+    .blocklyText:contains("🤔"),
+    .blocklyText:contains("🔗") {
       font-size: 30px !important;
     }
     
@@ -360,6 +361,10 @@
       <block type="if_happy"></block>
       <block type="if_tired"></block>
     </category>
+    
+    <category name="🔗 Bağlantı" colour="#6C5CE7">
+      <block type="ssh_connect"></block>
+    </category>
   </xml>
 
 <script>
@@ -368,7 +373,8 @@
     mood: 'happy',
     energy: 100,
     isMoving: false,
-    isAwake: true
+    isAwake: true,
+    sshConnections: []
   };
 
   // Robot ASCII sanatları
@@ -440,6 +446,14 @@
    ( O.O ) 
     > ! <  
    /     \\ 
+  (  ___  )
+   |  |  | 
+   |__|__|`,
+   
+    connected: `    /\\_/\\  
+   ( @.@ ) 
+    > ◡ <  
+   /  📡  \\ 
   (  ___  )
    |  |  | 
    |__|__|`
@@ -524,6 +538,19 @@
       this.setNextStatement(true, null);
       this.setColour('#FF6B6B');
       this.setTooltip("Robot uyanır ve enerjisi dolar");
+    }
+  };
+
+  // YENİ: SSH Bağlantı Bloğu
+  Blockly.Blocks['ssh_connect'] = {
+    init: function() {
+      this.appendDummyInput()
+          .appendField("🔗 SSH Bağlan:")
+          .appendField(new Blockly.FieldTextInput("192.168.1.100"), "SSH_ADDRESS");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour('#6C5CE7');
+      this.setTooltip("Belirtilen SSH adresine 22 portu üzerinden bağlanır");
     }
   };
 
@@ -760,6 +787,12 @@
     return 'robotAction("wake_up", "☀️ Uyanıyorum! Günaydın!");\n';
   };
 
+  // YENİ: SSH Bağlantı kod üreticisi
+  javascriptGenerator.forBlock['ssh_connect'] = function(block) {
+    var sshAddress = block.getFieldValue('SSH_ADDRESS');
+    return 'sshConnect("' + sshAddress + '");\n';
+  };
+
   // Ses kod üreticileri
   javascriptGenerator.forBlock['bark'] = function(block) {
     return 'robotAction("bark", "🐕 HAV HAV HAV!");\n';
@@ -876,6 +909,27 @@
     // Gerçek bekleme simülasyonu için setTimeout kullanabiliriz
   }
 
+  // YENİ: SSH Bağlantı fonksiyonu
+  function sshConnect(address) {
+    addToOutput(`🔗 SSH bağlantısı başlatılıyor: ${address}:22`);
+    
+    // SSH bağlantısı simülasyonu
+    setTimeout(() => {
+      const isConnected = Math.random() > 0.3; // %70 başarı oranı
+      
+      if (isConnected) {
+        robotState.sshConnections.push(address);
+        addToOutput(`✅ SSH bağlantısı başarılı: ${address}:22`);
+        addToOutput(`🔐 Güvenli bağlantı kuruldu!`);
+        robotAction("connected", `🔗 ${address} adresine bağlandım!`);
+      } else {
+        addToOutput(`❌ SSH bağlantısı başarısız: ${address}:22`);
+        addToOutput(`🚫 Bağlantı reddedildi veya zaman aşımı!`);
+        robotAction("sad", "😢 Bağlantı kuramadım...");
+      }
+    }, 2000);
+  }
+
   function addToOutput(message) {
     const output = document.getElementById('output');
     output.innerHTML += '<br>🐾 ' + message;
@@ -900,6 +954,11 @@
         status.textContent = '☀️ Uyanıyorum!';
         display.classList.add('shaking');
         setTimeout(() => display.classList.remove('shaking'), 1500);
+        break;
+      case 'connected':
+        status.textContent = '🔗 SSH Bağlantısı Kuruldu!';
+        display.classList.add('bouncing');
+        setTimeout(() => display.classList.remove('bouncing'), 3000);
         break;
       case 'happy':
         status.textContent = '😊 Çok Mutluyum!';
@@ -937,7 +996,8 @@
       'fetch': 'Top Getiriyorum!',
       'dance': 'Dans Ediyorum!',
       'roll_over': 'Takla Atıyorum!',
-      'wake_up': 'Uyanıyorum!'
+      'wake_up': 'Uyanıyorum!',
+      'connected': 'Bağlantı Kurdum!'
     };
     return actions[action] || 'Hazırım!';
   }
@@ -954,6 +1014,10 @@
         robotState.energy = 100; // Enerji tam dolar
         robotState.mood = 'happy';
         robotState.position = 'standing';
+        break;
+      case 'connected':
+        robotState.mood = 'excited';
+        robotState.energy += 5;
         break;
       case 'move_forward':
       case 'move_backward':
@@ -1005,7 +1069,8 @@
       mood: 'happy',
       energy: 100,
       isMoving: false,
-      isAwake: true
+      isAwake: true,
+      sshConnections: []
     };
     
     const output = document.getElementById('output');
@@ -1031,9 +1096,14 @@
         <next>
           <block type="bark">
             <next>
-              <block type="move_forward">
+              <block type="ssh_connect">
+                <field name="SSH_ADDRESS">192.168.1.100</field>
                 <next>
-                  <block type="sit">
+                  <block type="move_forward">
+                    <next>
+                      <block type="sit">
+                      </block>
+                    </next>
                   </block>
                 </next>
               </block>
