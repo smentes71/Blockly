@@ -121,16 +121,16 @@
       stroke-linejoin: miter !important;
     }
     
-    /* Blok içindeki metinleri ve simgeleri büyütme */
+    /* Blok içindeki metinleri ve simgeleri büyütme - YENİ BOYUTLAR */
     .blocklyText {
-      font-size: 16px !important;
+      font-size: 20px !important;
       font-weight: bold !important;
       font-family: "Comic Sans MS", cursive, sans-serif !important;
     }
     
     /* Blok field'larını büyütme */
     .blocklyFieldLabel {
-      font-size: 18px !important;
+      font-size: 22px !important;
       font-weight: bold !important;
       font-family: "Comic Sans MS", cursive, sans-serif !important;
     }
@@ -139,24 +139,26 @@
     .blocklyFieldTextInput,
     .blocklyFieldNumber,
     .blocklyFieldDropdown {
-      font-size: 16px !important;
+      font-size: 20px !important;
       font-weight: bold !important;
       font-family: "Comic Sans MS", cursive, sans-serif !important;
+      padding: 8px 12px !important;
+      border-radius: 8px !important;
     }
     
     /* Toolbox kategorilerini büyütme */
     .blocklyTreeLabel {
-      font-size: 16px !important;
+      font-size: 20px !important;
       font-weight: bold !important;
       font-family: "Comic Sans MS", cursive, sans-serif !important;
     }
     
-    /* Blok içindeki emoji ve simgeleri büyütme */
+    /* Blok içindeki emoji ve simgeleri 30px yapma */
     .blocklyText tspan {
-      font-size: 20px !important;
+      font-size: 30px !important;
     }
     
-    /* Özel emoji büyütme sınıfı */
+    /* Özel emoji büyütme - 30px */
     .blocklyText:contains("🐕"),
     .blocklyText:contains("🔙"),
     .blocklyText:contains("↩️"),
@@ -180,18 +182,44 @@
     .blocklyText:contains("⏰"),
     .blocklyText:contains("🔁"),
     .blocklyText:contains("🤔") {
-      font-size: 22px !important;
+      font-size: 30px !important;
     }
     
-    /* Blok boyutlarını artırma */
+    /* Blok boyutlarını daha fazla artırma - emojilere uygun */
     .blocklyBlockBackground {
-      transform: scale(1.1) !important;
+      transform: scale(1.3) !important;
       transform-origin: center !important;
     }
     
-    /* Bloklar arası boşluğu artırma */
+    /* Bloklar arası boşluğu daha fazla artırma */
     .blocklyWorkspace {
-      padding: 20px !important;
+      padding: 30px !important;
+    }
+    
+    /* Toolbox genişliğini artırma - büyük bloklar için */
+    .blocklyToolboxDiv {
+      min-width: 280px !important;
+    }
+    
+    /* Blok içindeki padding'i artırma */
+    .blocklyBlockBackground {
+      padding: 8px !important;
+    }
+    
+    /* Kategori başlıklarını büyütme */
+    .blocklyTreeRow {
+      min-height: 50px !important;
+      line-height: 50px !important;
+    }
+    
+    /* Blok bağlantı noktalarını büyütme */
+    .blocklyPath {
+      stroke-width: 3px !important;
+    }
+    
+    /* Workspace zoom ayarları - büyük bloklar için */
+    .blocklyZoom {
+      transform: scale(0.8) !important;
     }
     
     .robot-display {
@@ -275,7 +303,7 @@
       <button class="reset-btn" onclick="resetRobot()">🔄 Robotu Sıfırla</button>
     </div>
 
-    <div id="blocklyDiv" style="height: 500px; width: 100%;"></div>
+    <div id="blocklyDiv" style="height: 600px; width: 100%;"></div>
     
     <div class="robot-display">
       <div class="status" id="robotStatus">🐕 Robot Hazır!</div>
@@ -829,8 +857,8 @@
     zoom: {
       controls: true,
       wheel: true,
-      startScale: 0.8,
-      maxScale: 3,
+      startScale: 0.7,
+      maxScale: 2,
       minScale: 0.3,
       scaleSpeed: 1.2
     }
