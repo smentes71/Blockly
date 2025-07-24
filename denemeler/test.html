@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blockly Calculator Example</title>
+    <script src="https://unpkg.com/blockly@11.2.0/blockly.min.js"></script>
+    <script src="https://unpkg.com/blockly@11.2.0/blocks.min.js"></script>
+    <script src="https://unpkg.com/blockly@11.2.0/javascript.min.js"></script>
+</head>
+<body>
+    <div id="blocklyDiv" style="height: 480px; width: 800px;"></div>
+    <button onclick="runCode()" style="margin: 10px;">Çalıştır</button>
+    <div id="output" style="margin: 10px;"></div>
+
+    <xml id="toolbox" style="display: none">
+        <category name="Hesaplama" colour="%{BKY_MATH_HUE}">
+            <block type="math_number"></block>
+            <block type="math_arithmetic">
+                <field name="OP">ADD</field>
+                <value name="A">
+                    <shadow type="math_number">
+                        <field name="NUM">1</field>
+                    </shadow>
+                </value>
+                <value name="B">
+                    <shadow type="math_number">
+                        <field name="NUM">1</field>
+                    </shadow>
+                </value>
+            </block>
+            <block type="calculate_result"></block>
+        </category>
+    </xml>
+
+    <script>
+        // Özel hesaplama bloğu tanımlama
+        Blockly.Blocks['calculate_result'] = {
+            init: function() {
+                this.appendValueInput('NUMBER')
+                    .setCheck('Number')
+                    .appendField('Sonucu Göster');
+                this.setPreviousStatement(true, null);
+                this.setNextStatement(true, null);
+                this.setColour(230);
+                this.setTooltip('Hesaplama sonucunu gösterir');
+                this.setHelpUrl('');
+            }
+        };
+
+        // JavaScript kod üretici - DÜZELTME BURADA
+        const javascriptGenerator = Blockly.JavaScript;
+        
+        javascriptGenerator.forBlock['calculate_result'] = function(block) {
+            var value = javascriptGenerator.valueToCode(block, 'NUMBER',
+                javascriptGenerator.ORDER_ATOMIC) || '0';
+            var code = 'document.getElementById("output").textContent = "Sonuç: " + ' + value + ';\n';
+            return code;
+        };
+
+        // Workspace oluşturma
+        var workspace = Blockly.inject('blocklyDiv', {
+            toolbox: document.getElementById('toolbox'),
+            grid: {
+                spacing: 20,
+                length: 3,
+                colour: '#ccc',
+                snap: true
+            },
+            zoom: {
+                controls: true,
+                wheel: true,
+                startScale: 1.0,
+                maxScale: 3,
+                minScale: 0.3,
+                scaleSpeed: 1.2
+            },
+            trashcan: true
+        });
+
+        // Kodu çalıştırma fonksiyonu
+        function runCode() {
+            var code = Blockly.JavaScript.workspaceToCode(workspace);
+            try {
+                eval(code);
+            } catch (e) {
+                alert('Hata: ' + e);
+            }
+        }
+
+        // Başlangıç bloğu ekleme
+        Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(`
+            <xml xmlns="https://developers.google.com/blockly/xml">
+                <block type="calculate_result" x="50" y="50">
+                    <value name="NUMBER">
+                        <block type="math_number">
+                            <field name="NUM">123</field>
+                        </block>
+                    </value>
+                </block>
+            </xml>
+        `), workspace);
+    </script>
+</body>
+</html>
