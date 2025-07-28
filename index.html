@@ -325,7 +325,7 @@
 
 <body>
   <div class="container">
-    <h1>🐕 Köpek Robot Kodlama Oyunu 🤖</h1>
+    <h1>🐕 Reina Robot Kodlama Oyunu 🤖</h1>
     <p class="subtitle">Sevimli köpek robotunu bloklar ile kodla ve hareketlerini kontrol et!</p>
 
     <div class="controls">
@@ -986,22 +986,21 @@
 
      
 var code = `#!/usr/bin/env python3
-from pidog import Pidog
+
 from time import sleep
 
-my_dog = Pidog()
-sleep(0.5)
+
+
 
 try:
     my_dog.do_action('forward', speed=98)
     my_dog.wait_all_done()
-    sleep(0.5)
+    
 except KeyboardInterrupt:
     pass
 except Exception as e:
     print(f"\\033[31mERROR: {e}\\033[m")
-finally:
-    my_dog.close()
+
 `;
            
      
@@ -1011,22 +1010,21 @@ finally:
     javascriptGenerator.forBlock['move_backward'] = function (block) {
 
 var code = `#!/usr/bin/env python3
-from pidog import Pidog
+
 from time import sleep
 
-my_dog = Pidog()
-sleep(0.5)
+
+
 
 try:
     my_dog.do_action('backward', speed=98)
     my_dog.wait_all_done()
-    sleep(0.5)
+    
 except KeyboardInterrupt:
     pass
 except Exception as e:
     print(f"\\033[31mERROR: {e}\\033[m")
-finally:
-    my_dog.close()
+
 `;
       
               
@@ -1035,22 +1033,21 @@ finally:
 
     javascriptGenerator.forBlock['turn_left'] = function (block) {
 var code = `#!/usr/bin/env python3
-from pidog import Pidog
+
 from time import sleep
 
-my_dog = Pidog()
-sleep(0.5)
+
+
 
 try:
     my_dog.do_action('turn_left', speed=98)
     my_dog.wait_all_done()
-    sleep(0.5)
+    
 except KeyboardInterrupt:
     pass
 except Exception as e:
     print(f"\\033[31mERROR: {e}\\033[m")
-finally:
-    my_dog.close()
+
 `;
 
       return code;
@@ -1059,22 +1056,21 @@ finally:
     javascriptGenerator.forBlock['turn_right'] = function (block) {
 
 var code = `#!/usr/bin/env python3
-from pidog import Pidog
+
 from time import sleep
 
-my_dog = Pidog()
-sleep(0.5)
+
+
 
 try:
     my_dog.do_action('turn_right', speed=98)
     my_dog.wait_all_done()
-    sleep(0.5)
+    
 except KeyboardInterrupt:
     pass
 except Exception as e:
     print(f"\\033[31mERROR: {e}\\033[m")
-finally:
-    my_dog.close()
+
 `;
 
       return code;
@@ -1083,22 +1079,21 @@ finally:
     javascriptGenerator.forBlock['sit'] = function (block) {
 
 var code = `#!/usr/bin/env python3
-from pidog import Pidog
+
 from time import sleep
 
-my_dog = Pidog()
-sleep(0.5)
+
+
 
 try:
     my_dog.do_action('sit', speed=70)
     my_dog.wait_all_done()
-    sleep(0.5)
+   
 except KeyboardInterrupt:
     pass
 except Exception as e:
     print(f"\\033[31mERROR: {e}\\033[m")
-finally:
-    my_dog.close()
+
 `;
 
       return code;
@@ -1106,12 +1101,12 @@ finally:
 
     javascriptGenerator.forBlock['stand'] = function (block) {
 var code = `#!/usr/bin/env python3
-from pidog import Pidog
+
 import time
 
 # Pidog'u başlat
-my_dog = Pidog()
-time.sleep(0.5)
+
+
 
 # Ayakta durma (stand) hareketini yap
 my_dog.do_action('stand', speed=70)
@@ -1126,19 +1121,19 @@ my_dog.close()
 
     javascriptGenerator.forBlock['lie_down'] = function (block) {
 var code = `#!/usr/bin/env python3
-from pidog import Pidog
+
 import time
 
 # Pidog'u başlat
-my_dog = Pidog()
-time.sleep(0.5)
+
+
 
 # Uzanma (lie) hareketini yap
 my_dog.do_action('lie', speed=70)
 my_dog.wait_all_done()
 
 # Kaynakları serbest bırak
-my_dog.close()
+
 `;      
       return code;
     };
@@ -1146,13 +1141,13 @@ my_dog.close()
     // YENİ: Uyan kod üreticisi
     javascriptGenerator.forBlock['wake_up'] = function (block) {
 var code = `#!/usr/bin/env python3
-from pidog import Pidog
+
 from time import sleep
 from preset_actions import pant
 from preset_actions import body_twisting
 
-my_dog = Pidog(head_init_angles=[0, 0, -30])
-sleep(1)
+my_dog.head_init_angles=[0, 0, -30])
+
 
 try:
     # stretch
@@ -1160,11 +1155,11 @@ try:
     my_dog.do_action('stretch', speed=50)
     my_dog.head_move([[0, 0, 30]]*2, immediately=True)
     my_dog.wait_all_done()
-    sleep(0.2)
+  
 
     body_twisting(my_dog)
     my_dog.wait_all_done()
-    sleep(0.5)
+ 
     my_dog.head_move([[0, 0, -30]], immediately=True, speed=90)
 
     # sit and wag_tail
@@ -1179,14 +1174,13 @@ try:
     my_dog.do_action('wag_tail', step_count=10, speed=30)
     my_dog.rgb_strip.set_mode('breath', 'pink', bps=0.5)
     while True:
-        sleep(1)
+        
 
 except KeyboardInterrupt:
     pass
 except Exception as e:
     print(f"\\033[31mERROR: {e}\\033[m")
-finally:
-    my_dog.close()
+
 `;
       
 
@@ -1707,12 +1701,16 @@ finally:
       const output = document.getElementById('output');
       output.innerHTML = '<strong>🎮 Robot Konsolu:</strong><br>🚀 Kodu çalıştırıyorum...';
 
-      var code = Blockly.JavaScript.workspaceToCode(workspace);
+      var Rawcode = Blockly.JavaScript.workspaceToCode(workspace);
+      var prefix = "from pidog import Pidog\nmy_dog = Pidog()\n\n";
+      var suffix = "\nmy_dog.close()";
+      var code = prefix + Rawcode+ suffix;
+
       console.log("Üretilen Kod:", code);
 
       try {
         // Blockly çalışma alanındaki kodu al
-        const code = Blockly.JavaScript.workspaceToCode(workspace);
+       // const code = Blockly.JavaScript.workspaceToCode(workspace);
 
         console.log(code);
         // JSON veri formatı
