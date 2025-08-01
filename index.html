@@ -813,14 +813,20 @@
     // Karar Blokları
     Blockly.Blocks['if_happy'] = {
       init: function () {
-        this.appendDummyInput().appendField("🤔 Eğer mutluysam:");
-        this.appendStatementInput("DO").setCheck(null);
+        this.appendValueInput("CONDITION")
+            .setCheck("Boolean")
+            .appendField("🤔 Eğer");
+        this.appendDummyInput()
+            .appendField("ise:");
+        this.appendStatementInput("DO")
+            .setCheck(null);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour('#A29BFE');
-        this.setTooltip("Robot mutluysa işlem yapar");
+        this.setTooltip("Koşul doğruysa işlemleri yapar");
       }
     };
+    
 
     Blockly.Blocks['if_tired'] = {
       init: function () {
@@ -1283,10 +1289,13 @@ except Exception as e:
     };
 
     // Karar kod üreticileri
+    
     javascriptGenerator.forBlock['if_happy'] = function (block) {
+      var condition = javascriptGenerator.valueToCode(block, 'CONDITION', javascriptGenerator.ORDER_NONE) || 'False';
       var statements = javascriptGenerator.statementToCode(block, 'DO');
-      return 'if(robotState.mood === "happy") {\n' + statements + '}\n';
+      return 'if ' + condition + ':\n' + javascriptGenerator.prefixLines(statements, '  ');
     };
+    
 
     javascriptGenerator.forBlock['if_tired'] = function (block) {
       var statements = javascriptGenerator.statementToCode(block, 'DO');
